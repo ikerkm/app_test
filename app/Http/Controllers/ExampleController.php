@@ -35,10 +35,14 @@ public function delete($id){
     $example = Example::findOrFail($id);
     $example->delete();
     return response()->json(null,204);
-    
+
 }
 
+public function login(Request $request){
+ 
 
+    
+}
 
 
 

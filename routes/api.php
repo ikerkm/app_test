@@ -20,4 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/example','ExampleController@index');
 Route::get("/example/{id}", 'ExampleController@show');
 Route::post('/example', 'ExampleController@store');
+Route::get('/login', 'User_loginController@login_user');
 Route::delete('/example/{id}', 'ExampleController@delete');
+
+
+Route::get('/get_users_already', 'register_userController@get_users');
+Route::post('/save_user','register_userController@save_user');
