@@ -9,9 +9,21 @@ use App\Http\Resources\User_registerCollection;
 class register_userController extends Controller
 {
     public function get_users(Request $request){
+        $request -> validate([
+            
+            'email'=>'required',
 
-        return new User_registerResource(user_acc::findOrFail($request->all()));
-
+        ]);
+       $already_exist = user_acc::select('email')
+       ->where('email', $request->get('email'))
+       ->count();
+ 
+   if ($already_exist){
+    return response()->json(['exist' => false], 200);
+   }else{
+    return response()->json(['exist' => true,'email'=>$request-> get('email')], 200);
+   }
+     //  return response()->json(['exist' => $already_exist], 200);
     }
 
 
@@ -28,10 +40,8 @@ class register_userController extends Controller
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
         ]);
-        return (new User_registerResource($user_register))
-        ->response()
-        ->setStatusCode(201);
+       
 
-
+        return response()->json(['status' => 'Register complete',"email" =>$request->get('email'), 'name' => $request->get('name'), ], 200);
     }
 }

@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Auth;
 class User_loginController extends Controller
 {
    public function login_user (Request $request){
+      $request -> validate([
+         
+         'password'=> 'required',
+         'email'=>'required',
+
+     ]);
+      
     $validate_user = new User_loginResource( User_acc::select('*')
     ->where('email', $request -> get('email'))
     ->first());
@@ -17,10 +24,12 @@ class User_loginController extends Controller
         $token = $validate_user -> createToken('TutsForWeb')->accessToken;
        User_acc::where('email', $request->get('email'))
           ->update(['token' => Hash::make($token)]);
-       // return response()->json(['token' => $token], 200);
-       echo "algo";
+        return response()->json(['token' => $token, 'id' => $validate_user -> id], 200);
+     // echo "algo";
     }else{
         echo "wrong credentials";
     }
+    
+   
    }
 }
